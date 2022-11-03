@@ -6,7 +6,6 @@
 
 ## 3. Define the class names
 
-Usually, the Model class name will be the capitalised table name (single instead of plural). The same name is then suffixed by `Repository` for the Repository class name.
 
 ```ruby
 # EXAMPLE
