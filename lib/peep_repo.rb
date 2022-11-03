@@ -1,4 +1,4 @@
-require 'peep'
+require_relative 'peep'
 
 class PeepRepository
 
@@ -63,4 +63,10 @@ class PeepRepository
 
   # def delete(student)
   # end
+  private
+
+  def peep_sort(peeps)
+  end
+
+
 end

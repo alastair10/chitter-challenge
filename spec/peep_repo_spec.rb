@@ -20,7 +20,7 @@ describe PeepRepository do
     
       expect(peeps.length).to eq(4)
       expect(peeps.first.content).to eq('alastair is amazing')
-      expect(peeps.last.tag).to eq('@makers')
+      expect(peeps.last.tag).to eq('@burritos @wife @cat')
     end
   end
 
@@ -31,7 +31,7 @@ describe PeepRepository do
       new_peep = Peep.new
       new_peep.content = 'NewPostTest'
       new_peep.timestamp = '2024-04-04 13:35:06'
-      new_peep.tag = '@gunel'
+      new_peep.tag = '@makers'
       new_peep.user_id = 2
 
       repo.create(new_peep)
@@ -41,7 +41,7 @@ describe PeepRepository do
       expect(peeps.length).to eq(5)
       expect(peeps.last.content).to eq('NewPostTest')
       expect(peeps.last.timestamp).to eq('2024-04-04 13:35:06')
-      expect(peeps.last.tag).to eq('@gunel')
+      expect(peeps.last.tag).to eq('@makers')
       expect(peeps.last.user_id).to eq(2)
     end
   end
