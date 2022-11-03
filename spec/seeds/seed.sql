@@ -28,7 +28,7 @@ INSERT INTO users (username, email, password) VALUES ('alastair123', 'alastair@g
 INSERT INTO users (username, email, password) VALUES ('gunel123', 'gunel@gmail.com', 'password222');
 INSERT INTO users (username, email, password) VALUES ('thanos123', 'thanos@gmail.com', 'password333');
 
-INSERT INTO peeps (content, timestamp, tag, user_id) VALUES ('alastair is amazing', '2022-01-08 04:05:06', '#alastair, #life, #makers', 1);
-INSERT INTO peeps (content, timestamp, tag, user_id) VALUES ('gunel is amazing', '2022-01-08 05:05:06', '#gunel, #life, #starling', 2);
-INSERT INTO peeps (content, timestamp, tag, user_id) VALUES ('thanos is amazing', '2022-01-08 06:05:06', '#cat, #cantspeak', 3);
-INSERT INTO peeps (content, timestamp, tag, user_id) VALUES ('everyone is amazing', '2022-01-08 07:05:06', '#life, #makers', 1);
+INSERT INTO peeps (content, timestamp, tag, user_id) VALUES ('alastair is amazing', '2022-01-08 04:05:06', '#alastair#life#makers', 1);
+INSERT INTO peeps (content, timestamp, tag, user_id) VALUES ('gunel is amazing', '2022-01-08 05:05:06', '#gunel#life#starling', 2);
+INSERT INTO peeps (content, timestamp, tag, user_id) VALUES ('thanos is amazing', '2022-01-08 06:05:06', '#cat#cantspeak', 3);
+INSERT INTO peeps (content, timestamp, tag, user_id) VALUES ('everyone is amazing', '2022-01-08 07:05:06', '#life#makers', 1);

@@ -44,7 +44,7 @@ I want to receive an email if I am tagged in a Peep
 _Also design the interface of each class in more detail._
 
 ```ruby
-class MusicLibrary
+class Peeps
   def initialize
     # ...
   end
