@@ -8,7 +8,7 @@ class UserRepository
     
     users = []
     # Executes the SQL query:
-    sql = 'SELECT id, username, email FROM users;'
+    sql = 'SELECT id, username, email, password FROM users;'
     result_set = DatabaseConnection.exec_params(sql, [])
 
     result_set.each do |record|
@@ -16,6 +16,7 @@ class UserRepository
       user.id = record['id']
       user.username = record['username']
       user.email = record['email']
+      user.password = record['password']
 
       users << user
     end
@@ -36,8 +37,8 @@ class UserRepository
 
   def create(user)
     # Executes the SQL query:
-    sql = 'INSERT INTO users (username, email) VALUES ($1, $2);'
-    sql_params = [user.username, user.email]
+    sql = 'INSERT INTO users (username, email, password) VALUES ($1, $2, $3);'
+    sql_params = [user.username, user.email, user.password]
 
     result_set = DatabaseConnection.exec_params(sql,sql_params)
   end

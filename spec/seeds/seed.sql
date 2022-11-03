@@ -5,7 +5,8 @@ DROP TABLE IF EXISTS peeps;
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   username text,
-  email text
+  email text,
+  password text
 );
 
 -- Table 2 Definition
@@ -23,9 +24,9 @@ CREATE TABLE peeps (
 
 TRUNCATE TABLE users, peeps RESTART IDENTITY CASCADE;
 
-INSERT INTO users (username, email) VALUES ('alastair123', 'alastair@gmail.com');
-INSERT INTO users (username, email) VALUES ('gunel123', 'gunel@gmail.com');
-INSERT INTO users (username, email) VALUES ('thanos123', 'thanos@gmail.com');
+INSERT INTO users (username, email, password) VALUES ('alastair123', 'alastair@gmail.com', 'Password111');
+INSERT INTO users (username, email, password) VALUES ('gunel123', 'gunel@gmail.com', 'Password222');
+INSERT INTO users (username, email, password) VALUES ('thanos123', 'thanos@gmail.com', 'Password333');
 
 INSERT INTO peeps (content, timestamp, tag, user_id) VALUES ('alastair is amazing', '2022-01-08 04:05:06', '@alastair@makers', 1);
 INSERT INTO peeps (content, timestamp, tag, user_id) VALUES ('gunel is amazing', '2022-01-08 05:05:06', '@gunel@starling', 2);

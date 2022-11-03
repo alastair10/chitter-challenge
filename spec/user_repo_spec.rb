@@ -32,6 +32,7 @@ describe UserRepository do
       new_user = User.new
       new_user.username = 'family123'
       new_user.email = 'family@gmail.com'
+      new_user.password = 'Password4444'
 
       repo.create(new_user)
 
@@ -40,6 +41,8 @@ describe UserRepository do
       expect(users.length).to eq(4)
       expect(users.last.username).to eq('family123')
       expect(users.last.email).to eq('family@gmail.com')
+      expect(users.last.password).to eq('Password4444')
+
     end
   end
 
