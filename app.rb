@@ -1,5 +1,6 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
+require_relative 'lib/database_connection'
 
 class Application < Sinatra::Base
   # This allows the app code to refresh
@@ -7,4 +8,25 @@ class Application < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
   end
+
+  get '/' do
+    return erb(:index)
+  end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 end
