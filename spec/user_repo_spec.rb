@@ -41,7 +41,7 @@ describe UserRepository do
       expect(users.length).to eq(4)
       expect(users.last.username).to eq('family123')
       expect(users.last.email).to eq('family@gmail.com')
-      expect(users.last.password).to eq('Password4444')
+      expect(users.last.password.length).to eq(60)
 
     end
   end
