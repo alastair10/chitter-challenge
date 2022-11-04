@@ -50,7 +50,4 @@ class Application < Sinatra::Base
     return erb(:peep_created)
 
   end
-
-
-
 end
