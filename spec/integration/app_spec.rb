@@ -54,7 +54,7 @@ describe Application do
       response = post('/peeps', content: 'Hello world', tag: '@world')
 
       expect(response.status).to eq(200)
-      expect(response.body).to include('<p>Your peep has been added: </p>')
+      expect(response.body).to include('<h3>Your peep has been added: </h3>')
     end
 
     xit "responds with 400 status if parameters are invalid" do

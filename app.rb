@@ -39,7 +39,8 @@ class Application < Sinatra::Base
     new_peep = Peep.new
     new_peep.content = params[:content]
     new_peep.tag = params[:tag]
-    
+    new_peep.timestamp = Time.new
+    new_peep.user_id = 3
     repo.create(new_peep)
 
     @content = params[:content]
