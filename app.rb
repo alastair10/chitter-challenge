@@ -30,6 +30,12 @@ class Application < Sinatra::Base
   end
 
   post '/peeps' do
+
+    if invalid_peep_parameters?
+      status 400
+      return erb(:failed_peep_post)
+    end
+
     # gets the body parameters
     content = params[:title]
     tag = params[:tag]
@@ -44,10 +50,24 @@ class Application < Sinatra::Base
     repo.create(new_peep)
 
     @content = params[:content]
+    @tag = params[:tag]
 
 
     # return a view to confirm form submission
     return erb(:peep_created)
 
   end
+
+  private
+
+  # checks for HTML tags, blank comments, and '<' beginnings
+  def invalid_peep_parameters?
+    params[:content].match(/<.+>/) || 
+    params[:content].start_with?('<') || 
+    params[:content] == "" || 
+    params[:tag].match(/<.+>/) ? true : false
+  end
+
+
+
 end

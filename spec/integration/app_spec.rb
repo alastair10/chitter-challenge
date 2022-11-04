@@ -55,10 +55,34 @@ describe Application do
 
       expect(response.status).to eq(200)
       expect(response.body).to include('<h3>Your peep has been added: </h3>')
+      expect(response.body).to include('Hello world')
+      expect(response.body).to include('@world')
+    end
+    
+    it "returns a success page if only tag is empty" do
+      response = post('/peeps', content: 'Hello world', tag: '')
+      expect(response.body).to include('<h3>Your peep has been added: </h3>')
+      expect(response.body).to include('Hello world')
     end
 
-    xit "responds with 400 status if parameters are invalid" do
-    
+    it "responds with 400 status if content is invalid" do
+      response = post('/peeps', content: '<script>', tag: '@world')
+      expect(response.status).to eq(400)
+      expect(response.body).to include('<h1>Invalid input.</h1>')
+      expect(response.body).to include('<p>Blank peeps and use of HTML tags are not permitted.</p>')
+    end
+
+    it "responds with 400 status if comments starts with <" do
+      response = post('/peeps', content: '<a', tag: '@world')
+      expect(response.status).to eq(400)
+      expect(response.body).to include('<h1>Invalid input.</h1>')
+      expect(response.body).to include('<p>Blank peeps and use of HTML tags are not permitted.</p>')
+    end
+
+    xit "responds with 400 status if content is blank" do
+      response = post('/peeps', content: '', tag: '@world')
+      expect(response.status).to eq(400)
+      expect(response.body).to include('<h1>Invalid input.</h1>')
     end
   end
 
