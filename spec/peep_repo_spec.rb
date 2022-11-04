@@ -19,8 +19,17 @@ describe PeepRepository do
       peeps = repo.all
     
       expect(peeps.length).to eq(4)
-      expect(peeps.first.content).to eq('alastair is amazing')
-      expect(peeps.last.tag).to eq('@burritos @wife @cat')
+    end
+
+    it "returns all peeps in descending time order" do
+      repo = PeepRepository.new
+      peeps = repo.all
+
+      expect(peeps.length).to eq(4)
+      expect(peeps.first.content).to eq('everyone is using chitter')
+      expect(peeps.first.timestamp).to eq('2022-01-08 07:05:06')
+      expect(peeps.last.content).to eq('I like burritos')
+      expect(peeps.last.timestamp).to eq('2022-01-08 04:05:06')
     end
   end
 
@@ -39,10 +48,10 @@ describe PeepRepository do
       peeps = repo.all
 
       expect(peeps.length).to eq(5)
-      expect(peeps.last.content).to eq('NewPostTest')
-      expect(peeps.last.timestamp).to eq('2024-04-04 13:35:06')
-      expect(peeps.last.tag).to eq('@makers')
-      expect(peeps.last.user_id).to eq(2)
+      expect(peeps.first.content).to eq('NewPostTest')
+      expect(peeps.first.timestamp).to eq('2024-04-04 13:35:06')
+      expect(peeps.last.content).to eq('I like burritos')
+      expect(peeps.last.user_id).to eq(1)
     end
   end
 

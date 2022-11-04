@@ -24,4 +24,32 @@ class Application < Sinatra::Base
 
     return erb(:peeps)
   end
+
+  get '/peeps/new' do
+    return erb(:new_peep)
+  end
+
+  post '/peeps' do
+    # gets the body parameters
+    content = params[:title]
+    tag = params[:tag]
+
+    # create the post in the database
+    repo = PeepRepository.new
+    new_peep = Peep.new
+    new_peep.content = params[:content]
+    new_peep.tag = params[:tag]
+    
+    repo.create(new_peep)
+
+    @content = params[:content]
+
+
+    # return a view to confirm form submission
+    return erb(:peep_created)
+
+  end
+
+
+
 end

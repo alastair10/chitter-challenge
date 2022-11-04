@@ -9,7 +9,7 @@ class PeepRepository
     peeps = []
     
     # Executes the SQL query:
-    sql = "SELECT id, content, timestamp, tag, user_id FROM peeps;"
+    sql = "SELECT id, content, timestamp, tag, user_id FROM peeps ORDER BY timestamp DESC;"
     result_set = DatabaseConnection.exec_params(sql,[])
 
     result_set.each do |record|
