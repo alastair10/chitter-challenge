@@ -9,30 +9,26 @@ describe Application do
   # Need to declare the `app` value by instantiating the Application class so the tests work.
   let(:app) { Application.new }
 
-  context 'GET /log in' do
-    it "responds with 400 status - email not found" do
+  context 'GET /email_not_found' do
+    it "responds with email not found" do
       response = get('/email_not_found')
       
-      expect(response.status).to eq(400)
+      expect(response.status).to eq(200)
       expect(response.body).to include("<h1>Email not found.</h1>")
-      expect(response.body).to include("<p>Uh oh, looks like you haven't signed up to Chitter yet.</p>")
+      expect(response.body).to include("<p>It looks like you haven't signed up to Chitter yet.</p>")
       expect(response.body).to include("<p><a href='/sign_up'>Sign up here!</a></p>")
     end
   end
 
-  context "GET to /" do
+  context "GET /" do
     it "returns 200 OK with correct content" do
-      # Send a GET request to /
-      # and returns a response object we can test.
       response = get("/")
 
-      # Assert the response status code and body.
       expect(response.status).to eq(200)
       expect(response.body).to include('<h1>Welcome to Chitter!</h1>')
       expect(response.body).to include('<h2>New here?</h2>')
       expect(response.body).to include('<div>Sign up</div>')
       expect(response.body).to include('<div>Sign in</div>')
-
       expect(response.body).to include('<a href="/peeps">Show me what everyone is talking about.</a></h2>')
     end
   end
@@ -51,12 +47,7 @@ describe Application do
       response = get('/peeps/new')
       expect(response.status).to eq(200)
       expect(response.body).to include('<h1>Add a peep</h1>')
-      # Check we have the correct form tag w/the action and method
       expect(response.body).to include('<form method="POST" action="/peeps">')
-
-      # We can assert more things, like having
-      # the right HTML form inputs, etc.
-
     end
   end
 
@@ -93,15 +84,62 @@ describe Application do
       expect(response.status).to eq(400)
       expect(response.body).to include('<h1>Invalid input.</h1>')
     end
+
+    it "responds with 400 status if tag starts with <" do
+      response = post('/peeps', content: 'blah', tag: '<a')
+      expect(response.status).to eq(400)
+      expect(response.body).to include('<h1>Invalid input.</h1>')
+    end
   end
 
-    context 'GET /log in' do
-      it "responds with 400 status - email not found" do
+  context 'GET /login' do
+    it "returns 200 OK with correct content" do
+      response = get('/login')
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<label>Email: </label>')
+      expect(response.body).to include('<input type="text" name="password" />')
+      expect(response.body).to include("<a href='/''>Nevermind, go back.</a>")
+    end
+  end
 
-      end
+  # come back to this because it's trying to decrypt a pw that wasn't encrypted yet
+  context "POST /login" do
+    xit "returns a failure page for incorrect pw" do
+      response = post('/login', email: 'thanos@gmail.com', password: 'Password3334')
+      expect(response.status).to eq(400)
+      expect(response.body).to include('<h1>Incorrect Credentials</h1>')
+      expect(response.body).to include('<p>Please check your email and password.</p>')
     end
 
+    it "returns a failure page for email entered that isn't in db" do
+      response = post('/login', email: 'wrong', password: 'Password3333')
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<h1>Email not found.</h1>')
+      expect(response.body).to include("<p>It looks like you haven't signed up to Chitter yet.</p>")
+    end
 
+    it "returns an invalid input message when email field is blank" do
+      response = post('/login', email:'', password: 'Password3333')
+      expect(response.status).to eq(400)
+      expect(response.body).to include('<h1>Invalid input.</h1>')
+    end
 
+    it "returns an invalid input message when password field is blank" do
+      response = post('/login', email: 'wrong', password: '')
+      expect(response.status).to eq(400)
+      expect(response.body).to include('<h1>Invalid input.</h1>')
+    end
 
+    it "returns an invalid input message when HTML script is entered into the email field" do
+      response = post('/login', email: '<script>', password: 'Password3333')
+      expect(response.status).to eq(400)
+      expect(response.body).to include('<h1>Invalid input.</h1>')
+    end
+
+    it "returns an invalid input message when HTML script is entered into the password field" do
+      response = post('/login', email: 'wrong', password: '<a href')
+      expect(response.status).to eq(400)
+      expect(response.body).to include('<h1>Invalid input.</h1>')
+    end
+  end
 end

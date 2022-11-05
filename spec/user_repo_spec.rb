@@ -56,22 +56,7 @@ describe UserRepository do
       expect(user).to eq(nil)
     end
   end
-
-  context "SIGN IN method" do
-    xit "returns nil if email is not in db" do
-      user = repo.sign_in('new_email@gmail.com','testpw')
-      expect(user).to eq(nil)
-    end
-
-    xit "returns user record if email and pw match" do
-      user = repo.sign_in('thanos@gmail.com','Password333')
-
-
-
-
-    end
-  end
-  context "SIGN_IN" do
+  context "AUTHENTICATION method" do
     it "signs in the user with correct credentials" do
       new_user = User.new
       new_user.username = 'family123'
@@ -93,26 +78,5 @@ describe UserRepository do
       result = repo.authentication('family@gmail.com', 'Password4441')
       expect(result).to eq(false)
     end
-
-    it "returns nil if the email is not found" do
-      new_user = User.new
-      new_user.username = 'family123'
-      new_user.email = 'family@gmail.com'
-      new_user.password = 'Password4444'
-
-      repo.create(new_user)
-      result = repo.authentication('family2@gmail.com', 'Password4441')
-      expect(result).to eq(nil)
-    end
   end
 end
-# # 2
-# # Get a single peep using a tag
-
-# repo = UserRepository.new
-
-# user = repo.find('gunel123')
-
-# expect(user.id).to eq(2)
-# expect(user.username).to eq('gunel123')
-# expect(user.email).to eq('gunel@gmail.com')

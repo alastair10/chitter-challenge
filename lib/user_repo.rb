@@ -3,12 +3,8 @@ require_relative 'user'
 
 class UserRepository
 
-  # Selecting all records
-  # No arguments
   def all
-    
     users = []
-    # Executes the SQL query:
     sql = 'SELECT id, username, email, password FROM users;'
     result_set = DatabaseConnection.exec_params(sql, [])
 
@@ -22,43 +18,21 @@ class UserRepository
       users << user
     end
 
-    # Returns an array of Student objects.
-    return users
+    return users # => array of User objects
   end
 
-  # Gets a single record by its ID
-  # One argument: the id (number)
-  # def find(id)
-  #   # Executes the SQL query:
-  #   SELECT id, username, email FROM users WHERE id = '$1';
-  #   # Returns a single Student object.
-  # end
-
-  # Add more methods below for each operation you'd like to implement.
-
   def create(user)
-    # Encrypt the password to save it into the new database record.
-    encrypted_password = BCrypt::Password.create(user.password)
+    encrypted_password = BCrypt::Password.create(user.password) # Encrypts password
 
     sql = 'INSERT INTO users (username, email, password) VALUES ($1, $2, $3);'
     sql_params = [user.username, user.email, encrypted_password]
-
     result_set = DatabaseConnection.exec_params(sql,sql_params)
   end
-
-
 
   def authentication(email, submitted_password)
     user = find_by_email(email)
 
-    return nil if user.nil?
-
-    # Compare the submitted pwd with the encrypted one in the db
-    if BCrypt::Password.new(user.password) == submitted_password
-      return true
-    else
-      return false
-    end
+    BCrypt::Password.new(user.password) == submitted_password ? true : false
   end
 
   def find_by_email(email)
