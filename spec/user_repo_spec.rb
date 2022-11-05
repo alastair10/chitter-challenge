@@ -50,8 +50,19 @@ describe UserRepository do
       expect(user.email).to eq('thanos@gmail.com')
       expect(user.password).to eq('Password333')
     end
+
+    it "returns nil if email is not in db" do
+      user = repo.find_by_email('new-email@gmail.com')
+      expect(user).to eq(nil)
+    end
   end
 
+  context "SIGN IN method" do
+    it "returns nil if email is not in db" do
+      user = repo.sign_in('new_email@gmail.com','testpw')
+      expect(user).to eq(nil)
+    end
+  end
 # # 2
 # # Get a single peep using a tag
 

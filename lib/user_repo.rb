@@ -64,6 +64,8 @@ class UserRepository
     sql = 'SELECT id, username, email, password FROM users WHERE email = $1;'
     result_set = DatabaseConnection.exec_params(sql, [email])
 
+    return nil if result_set.values.empty?
+
     user = User.new
     user.id = result_set[0]['id'].to_i
     user.username = result_set[0]['username']
