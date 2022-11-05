@@ -27,8 +27,7 @@ class Application < Sinatra::Base
 
     user = UserRepository.new.find_by_email(user)
 
-    # This is a simplified way of checking the pwd 
-    # In real projects, you should encrypt pwds stored in the db
+    return erb(:email_not_found) if user == false
 
     if user.password == password
       # set the user ID in the session
@@ -39,6 +38,21 @@ class Application < Sinatra::Base
     end
   end
 
+  get '/email_not_found' do
+    status 400
+    return erb(:email_not_found)
+  end
+
+  # "authenticated-only" route can be accessed only if a user signed-in (if we have user info in session).
+  get '/account_page' do
+    if session[:user_id] == nil
+      # not logged in so no user in session
+      return redirect('/login')
+    else
+      # user is logged in
+      return erb(:account)
+    end
+  end
 
   get '/' do
     return erb(:index)

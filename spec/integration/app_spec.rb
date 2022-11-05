@@ -9,6 +9,17 @@ describe Application do
   # Need to declare the `app` value by instantiating the Application class so the tests work.
   let(:app) { Application.new }
 
+  context 'GET /log in' do
+    it "responds with 400 status - email not found" do
+      response = get('/email_not_found')
+      
+      expect(response.status).to eq(400)
+      expect(response.body).to include("<h1>Email not found.</h1>")
+      expect(response.body).to include("<p>Uh oh, looks like you haven't signed up to Chitter yet.</p>")
+      expect(response.body).to include("<p><a href='/sign_up'>Sign up here!</a></p>")
+    end
+  end
+
   context "GET to /" do
     it "returns 200 OK with correct content" do
       # Send a GET request to /
@@ -84,6 +95,11 @@ describe Application do
     end
   end
 
+    context 'GET /log in' do
+      it "responds with 400 status - email not found" do
+
+      end
+    end
 
 
 

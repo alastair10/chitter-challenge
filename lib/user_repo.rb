@@ -53,9 +53,9 @@ class UserRepository
 
     # Compare the submitted pwd with the encrypted one in the db
     if submitted_password == BCrypt::Password.new(user.password)
-      # correct password
+      return user
     else
-      # wrong password
+      return false
     end
   end
 
