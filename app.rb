@@ -6,12 +6,39 @@ require_relative 'lib/peep_repo'
 DatabaseConnection.connect
 
 class Application < Sinatra::Base
-  # This allows the app code to refresh
-  # without having to restart the server.
+  enable :sessions
+
+  # This allows the app code to refresh w/o having to restart the server
   configure :development do
     register Sinatra::Reloader
     also_reload 'lib/peep_repo'
   end
+
+  # Route to return to log in page
+  get'/login' do
+    return erb(:login)
+  end
+
+  # Route receives login info (email/pwd) as body params and finds user in db w/email 
+  # If pwd matches, returns success page
+  post '/login' do
+    email = params[:email]
+    password = params[:password]
+
+    user = UserRepository.new.find_by_email(user)
+
+    # This is a simplified way of checking the pwd 
+    # In real projects, you should encrypt pwds stored in the db
+
+    if user.password == password
+      # set the user ID in the session
+      session[:user_id] = user.id
+      return erb(:login_success)
+    else
+      return erb(:login_error)
+    end
+  end
+
 
   get '/' do
     return erb(:index)
@@ -60,7 +87,7 @@ class Application < Sinatra::Base
 
   private
 
-  # checks for HTML tags, blank comments, and '<' beginnings
+  # checks for HTML tags, '<' beginnings, and blank comments. (tags can be blank)
   def invalid_peep_parameters?
     params[:content].match(/<.+>/) || 
     params[:content].start_with?('<') || 

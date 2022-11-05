@@ -46,9 +46,37 @@ class UserRepository
     result_set = DatabaseConnection.exec_params(sql,sql_params)
   end
 
-  # def update(student)
-  # end
+  def sign_in(email, submitted_password)
+    user = find_by_email(email)
 
-  # def delete(student)
-  # end
+    return nil if user.nil?
+
+    # Compare the submitted pwd with the encrypted one in the db
+    if submitted_password == BCrypt::Password.new(user.password)
+      # correct password
+    else
+      # wrong password
+    end
+  end
+
+  def find_by_email(email)
+    
+    sql = 'SELECT id, username, email, password FROM users WHERE email = $1;'
+    result_set = DatabaseConnection.exec_params(sql, [email])
+
+    user = User.new
+    user.id = result_set[0]['id'].to_i
+    user.username = result_set[0]['username']
+    user.email = result_set[0]['email']
+    user.password = result_set[0]['password']
+
+    return user
+
+  end
+
+    # def update(student)
+    # end
+
+    # def delete(student)
+    # end
 end
