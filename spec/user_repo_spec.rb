@@ -67,6 +67,17 @@ describe UserRepository do
       result = repo.authentication('family@gmail.com', 'Password4444')
       expect(result).to eq(true)
     end
+    
+    it "signs in the user with other correct credentials" do
+      new_user = User.new
+      new_user.username = 'new22'
+      new_user.email = 'new22'
+      new_user.password = 'Password'
+
+      repo.create(new_user)
+      result = repo.authentication('new22', 'Password')
+      expect(result).to eq(true)
+    end
 
     it "rejects user that submits incorrect password" do
       new_user = User.new
@@ -77,6 +88,15 @@ describe UserRepository do
       repo.create(new_user)
       result = repo.authentication('family@gmail.com', 'Password4441')
       expect(result).to eq(false)
+    end
+  end
+
+  context "FIND_BY_ID method" do
+    it "returns the user with id = 1" do
+      user = repo.find_by_id(1)
+
+      expect(user.username).to eq('alastair123')
+      expect(user.email).to eq('alastair@gmail.com')
     end
   end
 end

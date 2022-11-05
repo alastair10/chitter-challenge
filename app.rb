@@ -3,6 +3,8 @@ require 'sinatra/reloader'
 require_relative 'lib/database_connection'
 require_relative 'lib/peep_repo'
 require_relative 'lib/user_repo'
+require_relative 'lib/user'
+
 
 
 DatabaseConnection.connect
@@ -27,7 +29,6 @@ class Application < Sinatra::Base
     new_user = User.new
     new_user.username = params[:username]
     new_user.email = params[:email]
-    new_user.password = params[:password]
 
     repo = UserRepository.new
     return erb(:email_already_exists) if repo.find_by_email(new_user.email) != nil
@@ -37,6 +38,8 @@ class Application < Sinatra::Base
     @email = params[:email]
     @username = params[:username]
 
+    #session[:user_id] = user.id
+    
     return erb(:create_account_success)
 
   end
@@ -55,19 +58,25 @@ class Application < Sinatra::Base
       return erb(:failed_logon_parameters)
     end
 
-    email = params[:email]
-    password = params[:password]
+    user = User.new
+    user.email = params[:email]
+    user.password = params[:password]
 
-    user = UserRepository.new
-  
-    return erb(:email_not_found) if user.find_by_email(email).nil?
+    repo = UserRepository.new
+    verified_user = repo.find_by_email(user.email)
 
-    if user.authentication(email, password)
-      session[:user_id] = user.id
-      return erb(:login_success)
+    return erb(:email_not_found) if verified_user.nil?
+
+    if repo.authentication(user.email, user.password)
+      @username = verified.username # not returning anything
+      return erb(:login_success) # is never successful
     else
-      return erb(:login_failure)
+      return erb(:login_success)
     end
+  end
+
+  get '/login_success' do
+    return erb(:login_success)
   end
 
   get '/login_failure' do
@@ -84,15 +93,15 @@ class Application < Sinatra::Base
   end
 
   # "authenticated-only" route can be accessed only if a user signed-in (if we have user info in session).
-  get '/account_page' do
-    if session[:user_id] == nil
-      # not logged in so no user in session
-      return redirect('/login')
-    else
-      # user is logged in
-      return erb(:account)
-    end
-  end
+  # get '/account_page' do
+  #   if session[:user_id] == nil
+  #     # not logged in so no user in session
+  #     return redirect('/login')
+  #   else
+  #     # user is logged in
+  #     return erb(:account)
+  #   end
+  # end
 
   get '/' do
     return erb(:index)
@@ -105,7 +114,11 @@ class Application < Sinatra::Base
   end
 
   get '/peeps/new' do
-    return erb(:new_peep)
+    if session[:user_id] == nil
+      return erb(:login)
+    else
+      return erb(:new_peep)
+    end
   end
 
   post '/peeps' do

@@ -3,8 +3,8 @@
 
 
 <% @peeps.each do |peep| %>
-  <%= peep.content %><br />
-  <%= peep.timestamp %><br />
-  <%= peep.tag %><br />
-  <br />
+  <h4><%= peep.content %></h4>
+  <%= peep.tag %>
+  <h5><div><%= peep.timestamp %></div></h5>
+</br>
 <% end %>
