@@ -46,14 +46,16 @@ class UserRepository
     result_set = DatabaseConnection.exec_params(sql,sql_params)
   end
 
-  def sign_in(email, submitted_password)
+
+
+  def authentication(email, submitted_password)
     user = find_by_email(email)
 
     return nil if user.nil?
 
     # Compare the submitted pwd with the encrypted one in the db
-    if submitted_password == BCrypt::Password.new(user.password)
-      return user
+    if BCrypt::Password.new(user.password) == submitted_password
+      return true
     else
       return false
     end
@@ -73,12 +75,5 @@ class UserRepository
     user.password = result_set[0]['password']
 
     return user
-
   end
-
-    # def update(student)
-    # end
-
-    # def delete(student)
-    # end
 end

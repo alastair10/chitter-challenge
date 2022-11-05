@@ -25,9 +25,9 @@ class Application < Sinatra::Base
     email = params[:email]
     password = params[:password]
 
-    user = UserRepository.new.find_by_email(user)
+    user = UserRepository.new.find_by_email(email)
 
-    return erb(:email_not_found) if user == false
+    return erb(:email_not_found) if user.nil?
 
     if user.password == password
       # set the user ID in the session
