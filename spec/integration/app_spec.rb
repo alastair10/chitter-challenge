@@ -16,7 +16,7 @@ describe Application do
       expect(response.status).to eq(200)
       expect(response.body).to include("<h1>Email not found.</h1>")
       expect(response.body).to include("<p>It looks like you haven't signed up to Chitter yet.</p>")
-      expect(response.body).to include("<p><a href='/sign_up'>Sign up here!</a></p>")
+      expect(response.body).to include("<p><a href='/create_account'>Sign up here!</a></p>")
     end
   end
 
@@ -27,8 +27,8 @@ describe Application do
       expect(response.status).to eq(200)
       expect(response.body).to include('<h1>Welcome to Chitter!</h1>')
       expect(response.body).to include('<h2>New here?</h2>')
-      expect(response.body).to include('<div>Sign up</div>')
-      expect(response.body).to include('<div>Sign in</div>')
+      expect(response.body).to include('<a href="/create_account">Create an account</a>')
+      expect(response.body).to include('<div><a href="/login">Sign in</a></div>')
       expect(response.body).to include('<a href="/peeps">Show me what everyone is talking about.</a></h2>')
     end
   end
@@ -140,6 +140,30 @@ describe Application do
       response = post('/login', email: 'wrong', password: '<a href')
       expect(response.status).to eq(400)
       expect(response.body).to include('<h1>Invalid input.</h1>')
+    end
+  end
+  
+  context "GET /create_account" do
+    it "returns 200 OK with correct content" do
+      response = get('/create_account')
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<label>Email: </label>')
+      expect(response.body).to include('<label>Password: </label>')
+      expect(response.body).to include('<label>Username: </label>')
+    end
+  end
+
+  context "POST /create_account" do
+    it "returns a 200 status when user creates a new account" do
+      response = post('/create_account', email:'new_account@gmail.com', password: 'Password1234', username: 'newbie')
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<h3>Welcome, newbie!  Thank you for creating an account.</h3>')
+    end
+
+    it "returns a 200 status when user attempts to sign up with email already in use" do
+      response = post('/create_account', email:'thanos@gmail.com', password: 'Password1234', username: 'thanos1234')
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<h1>Email already in use.</h1>')
     end
   end
 end

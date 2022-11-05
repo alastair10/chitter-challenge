@@ -14,10 +14,35 @@ class Application < Sinatra::Base
   configure :development do
     register Sinatra::Reloader
     also_reload 'lib/peep_repo'
+    also_reload 'lib/user_repo'
+  end
+
+  get '/create_account' do
+    return erb(:create_account)
+  end
+
+  post '/create_account' do
+    # invalid params check needed
+
+    new_user = User.new
+    new_user.username = params[:username]
+    new_user.email = params[:email]
+    new_user.password = params[:password]
+
+    repo = UserRepository.new
+    return erb(:email_already_exists) if repo.find_by_email(new_user.email) != nil
+
+    repo.create(new_user)
+
+    @email = params[:email]
+    @username = params[:username]
+
+    return erb(:create_account_success)
+
   end
 
   # Route to return to log in page
-  get'/login' do
+  get '/login' do
     return erb(:login)
   end
 
@@ -52,6 +77,10 @@ class Application < Sinatra::Base
 
   get '/email_not_found' do
     return erb(:email_not_found)
+  end
+
+  get '/email_already_exists' do
+    return erb(:email_already_exists)
   end
 
   # "authenticated-only" route can be accessed only if a user signed-in (if we have user info in session).
