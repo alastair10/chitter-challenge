@@ -5,8 +5,6 @@ require_relative 'lib/peep_repo'
 require_relative 'lib/user_repo'
 require_relative 'lib/user'
 
-
-
 DatabaseConnection.connect
 
 class Application < Sinatra::Base
@@ -29,6 +27,7 @@ class Application < Sinatra::Base
     new_user = User.new
     new_user.username = params[:username]
     new_user.email = params[:email]
+    new_user.password = params[:password]
 
     repo = UserRepository.new
     return erb(:email_already_exists) if repo.find_by_email(new_user.email) != nil
@@ -58,26 +57,22 @@ class Application < Sinatra::Base
       return erb(:failed_logon_parameters)
     end
 
-    user = User.new
-    user.email = params[:email]
-    user.password = params[:password]
-
     repo = UserRepository.new
-    verified_user = repo.find_by_email(user.email)
+    found_user = repo.find_by_email(params[:email])
 
-    return erb(:email_not_found) if verified_user.nil?
-
-    if repo.authentication(user.email, user.password)
-      @username = verified.username # not returning anything
-      return erb(:login_success) # is never successful
-    else
+    if found_user.nil?
+      return erb(:email_not_found)
+    elsif repo.authentication(params[:email], params[:password])
+      @username = found_user.username
       return erb(:login_success)
+    else
+      return erb(:login_failure)
     end
   end
 
-  get '/login_success' do
-    return erb(:login_success)
-  end
+  # get '/login_success' do
+  #   return erb(:login_success)
+  # end
 
   get '/login_failure' do
     status 400
@@ -91,17 +86,6 @@ class Application < Sinatra::Base
   get '/email_already_exists' do
     return erb(:email_already_exists)
   end
-
-  # "authenticated-only" route can be accessed only if a user signed-in (if we have user info in session).
-  # get '/account_page' do
-  #   if session[:user_id] == nil
-  #     # not logged in so no user in session
-  #     return redirect('/login')
-  #   else
-  #     # user is logged in
-  #     return erb(:account)
-  #   end
-  # end
 
   get '/' do
     return erb(:index)

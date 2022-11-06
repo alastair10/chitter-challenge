@@ -31,8 +31,15 @@ class UserRepository
 
   def authentication(email, submitted_password)
     user = find_by_email(email)
+    
+    decrypted = BCrypt::Password.new(user.password)
+    
+    if decrypted == submitted_password
+      return true
+    else
+      return false
 
-    BCrypt::Password.new(user.password) == submitted_password ? true : false
+    end
   end
 
   def find_by_email(email)
@@ -40,15 +47,17 @@ class UserRepository
     sql = 'SELECT id, username, email, password FROM users WHERE email = $1;'
     result_set = DatabaseConnection.exec_params(sql, [email])
 
-    return nil if result_set.values.empty?
+    if result_set.values.empty?
+      return nil 
+    else
+      user = User.new
+      user.id = result_set[0]['id'].to_i
+      user.username = result_set[0]['username']
+      user.email = result_set[0]['email']
+      user.password = result_set[0]['password']
 
-    user = User.new
-    user.id = result_set[0]['id'].to_i
-    user.username = result_set[0]['username']
-    user.email = result_set[0]['email']
-    user.password = result_set[0]['password']
-
-    return user
+      return user
+    end
   end
 
   def find_by_id(user_id)
