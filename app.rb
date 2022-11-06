@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'sinatra/flash'
 require 'sinatra/reloader'
 require_relative 'lib/database_connection'
 require_relative 'lib/peep_repo'
@@ -12,6 +13,7 @@ class Application < Sinatra::Base
 
   # This allows the app code to refresh w/o having to restart the server
   configure :development do
+    register Sinatra::Flash
     register Sinatra::Reloader
     also_reload 'lib/peep_repo'
     also_reload 'lib/user_repo'
@@ -92,6 +94,12 @@ class Application < Sinatra::Base
   get '/peeps' do
     repo = PeepRepository.new
     @peeps = repo.all
+
+    # user_repo = UserRepository.new
+    # user = user_repo.find_by_id(session[:user_id])
+
+    # @username = user.username
+
     return erb(:peeps)
   end
 
@@ -128,6 +136,13 @@ class Application < Sinatra::Base
 
     # return a view to confirm form submission
     return erb(:peep_created)
+  end
+
+
+  get '/session/logout' do
+    session.clear
+    flash[:notice] = "You have signed out."
+    redirect '/'
   end
 
   private
