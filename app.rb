@@ -61,12 +61,14 @@ class Application < Sinatra::Base
 
     repo = UserRepository.new
     found_user = repo.find_by_email(params[:email])
+    
 
     if found_user.nil?
       return erb(:email_not_found)
     elsif repo.authentication(params[:email], params[:password])
       @username = found_user.username
       @user_id = found_user.id
+      @session_id = found_user.id
       session[:user_id] = found_user.id
       return erb(:login_success)
     else
@@ -107,7 +109,7 @@ class Application < Sinatra::Base
   end
 
   post '/peeps' do
-
+      
     if invalid_peep_parameters?
       status 400
       return erb(:failed_peep_post)
@@ -123,7 +125,7 @@ class Application < Sinatra::Base
     new_peep.content = params[:content]
     new_peep.tag = params[:tag]
     new_peep.timestamp = Time.new
-    new_peep.user_id = 3
+    new_peep.user_id = session[:user_id]
     repo.create(new_peep)
 
     @content = params[:content]
