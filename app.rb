@@ -64,15 +64,13 @@ class Application < Sinatra::Base
       return erb(:email_not_found)
     elsif repo.authentication(params[:email], params[:password])
       @username = found_user.username
+      @user_id = found_user.id
+      session[:user_id] = found_user.id
       return erb(:login_success)
     else
       return erb(:login_failure)
     end
   end
-
-  # get '/login_success' do
-  #   return erb(:login_success)
-  # end
 
   get '/login_failure' do
     status 400

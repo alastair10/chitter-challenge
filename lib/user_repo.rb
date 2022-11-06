@@ -38,7 +38,6 @@ class UserRepository
       return true
     else
       return false
-
     end
   end
 

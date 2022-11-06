@@ -44,11 +44,11 @@ describe Application do
 
   # need to adjust for sessions
   context "GET /peeps/new" do
-    xit "returns the form page for posting a peep" do
+    it "returns the sign in page without proper user_id" do
       response = get('/peeps/new')
       expect(response.status).to eq(200)
-      expect(response.body).to include('<h1>Add a peep</h1>')
-      expect(response.body).to include('<form method="POST" action="/peeps">')
+      expect(response.body).to include('<h1>Sign in</h1>')
+      expect(response.body).to include('<label>Password: </label>')
     end
   end
 
@@ -104,12 +104,6 @@ describe Application do
   end
 
   context "POST /login" do
-    xit "returns a success page correct credentials" do
-      response = post('/login', email: 'thanos@gmail.com', password: 'Password333')
-      expect(response.status).to eq(200)
-      expect(response.body).to include('Welcome back')
-    end
-
     it "returns a failure page for email entered that isn't in db" do
       response = post('/login', email: 'wrong', password: 'Password3333')
       expect(response.status).to eq(200)
