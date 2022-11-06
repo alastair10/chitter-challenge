@@ -1,6 +1,8 @@
 require "spec_helper"
 require "rack/test"
 require_relative '../../app'
+require_relative '../../lib/user_repo'
+require 'bcrypt'
 
 describe Application do
   # Used to rack-test helper methods.

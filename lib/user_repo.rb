@@ -60,14 +60,27 @@ class UserRepository
   end
 
   def find_by_id(user_id)
-    sql = 'SELECT username, email, password FROM users WHERE id = $1;'
+    sql = 'SELECT users.id, users.username, users.email, users.password, peeps.id, peeps.content, peeps.timestamp, peeps.tag
+    FROM users
+    JOIN peeps on peeps.user_id = users.id
+    WHERE users.id = $1;'
     result_set = DatabaseConnection.exec_params(sql, [user_id])
 
     user = User.new
-    user.id = result_set[0]['id'].to_i
-    user.username = result_set[0]['username']
-    user.email = result_set[0]['email']
-    user.password = result_set[0]['password']
+    user.id = result_set.first['id'].to_i
+    user.username = result_set.first['username']
+    user.email = result_set.first['email']
+    user.password = result_set.first['password']
+
+    result_set.each do |record|
+      peep = Peep.new
+      peep.id = record['id']
+      peep.content = record['content']
+      peep.timestamp = record['timestamp']
+      peep.tag = record['tag']
+
+      user.peeps << peep
+    end
 
     return user
   end

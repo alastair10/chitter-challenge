@@ -106,17 +106,16 @@ describe UserRepository do
     end
   end
 
-
-
-
-
-
   context "FIND_BY_ID method" do
-    it "returns the user with id = 1" do
+    it "returns the username for peep id = 1" do
       user = repo.find_by_id(1)
-
       expect(user.username).to eq('alastair123')
-      expect(user.email).to eq('alastair@gmail.com')
+    end
+  end
+  context "FIND_BY_ID method" do
+    it "returns the username for peep id = 3" do
+      user = repo.find_by_id(3)
+      expect(user.username).to eq('thanos123')
     end
   end
 end

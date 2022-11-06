@@ -95,11 +95,6 @@ class Application < Sinatra::Base
     repo = PeepRepository.new
     @peeps = repo.all
 
-    # user_repo = UserRepository.new
-    # user = user_repo.find_by_id(session[:user_id])
-
-    # @username = user.username
-
     return erb(:peeps)
   end
 
