@@ -1,0 +1,12 @@
+<h4><a href="/peeps/new">Post a peep!</a></h4>
+
+<h4><a href="/session/logout">Log out</a></h4>
+
+
+<% @peeps.each do |peep| %>
+  <h5><div><%= peep.user_id %></div></h5>
+  <h4><%= peep.content %></h4>
+  <%= peep.tag %>
+  <h5><div><%= peep.timestamp %></div></h5>
+</br>
+<% end %>

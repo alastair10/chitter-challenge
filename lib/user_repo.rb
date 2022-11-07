@@ -60,11 +60,25 @@ class UserRepository
   end
 
   def find_by_id(user_id)
+    sql = 'SELECT * FROM users WHERE id = $1;'
+    result_set = DatabaseConnection.exec_params(sql, [user_id])
+
+    user = User.new
+    user.id = result_set.first['id'].to_i
+    user.username = result_set.first['username']
+    user.email = result_set.first['email']
+    user.password = result_set.first['password']
+    
+    return user
+    
+  end
+
+
+  def find_all_with_id
     sql = 'SELECT users.id, users.username, users.email, users.password, peeps.id, peeps.content, peeps.timestamp, peeps.tag
     FROM users
-    JOIN peeps on peeps.user_id = users.id
-    WHERE users.id = $1;'
-    result_set = DatabaseConnection.exec_params(sql, [user_id])
+    JOIN peeps on peeps.user_id = users.id;'
+    result_set = DatabaseConnection.exec_params(sql,[])
 
     user = User.new
     user.id = result_set.first['id'].to_i
