@@ -16,3 +16,7 @@ gem "rack-test", "~> 2.0"
 gem "bcrypt", "~> 3.1"
 
 gem "sinatra-flash", "~> 0.3.0"
+
+gem "simplecov", "~> 0.21.2"
+
+gem "simplecov-console", "~> 0.9.1"
