@@ -100,4 +100,45 @@ class UserRepository
 
     return user
   end
+
+  def find_all_peeps
+    sql = 'SELECT users.id, users.username, users.email, users.password, peeps.id, peeps.content, peeps.timestamp, peeps.tag
+    FROM users
+    JOIN peeps on peeps.user_id = users.id;'
+
+    result_set = DatabaseConnection.exec_params(sql,[id])
+
+    # first record is the user... no loop needed
+    first_record = result_set.first
+    user = record_to_user_object(first_record)
+
+    # loop needed to assign features of object for multiple peeps
+    result_set.each do |record|
+      user.peeps << record_to_peep_object(record)
+    end
+
+    return user
+  end
+
+  private
+
+  def record_to_user_object(record)
+    user = User.new
+    user.id = record.first['id'].to_i
+    user.username = record.first['username']
+    user.email = record.first['email']
+    user.password = record.first['password']
+
+    return user
+  end
+
+  def record_to_peep_object(record)
+    peep = Peep.new
+    peep.id = record['id']
+    peep.content = record['content']
+    peep.timestamp = record['timestamp']
+    peep.tag = record['tag']
+
+    return peep
+  end
 end

@@ -126,11 +126,15 @@ describe UserRepository do
       expect(user.username).to eq('gunel123')
     end
     
-    it "returns peep information about JOIN" do
+    it "returns info for the first peep from JOIN method" do
       user = repo.find_all_with_id(3)
-      p user
-      expect(user.last.id).to eq(4)
+      expect(user.peeps.first.tag).to eq('@cat')
     end
 
+    it "returns info for the second peep from JOIN method" do
+      user = repo.find_all_with_id(3)
+      expect(user.peeps.length).to eq(2)
+      expect(user.peeps.last.content).to eq('everyone is using chitter')
+    end
   end
 end
