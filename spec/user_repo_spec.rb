@@ -112,10 +112,25 @@ describe UserRepository do
       expect(user.username).to eq('alastair123')
     end
   end
+
   context "FIND_BY_ID method" do
     it "returns the username for peep id = 3" do
       user = repo.find_by_id(3)
       expect(user.username).to eq('thanos123')
     end
+  end
+
+  context "find_all_with_id method test to get all info related to user" do
+    it "returns user information about JOIN" do
+      user = repo.find_all_with_id(2)
+      expect(user.username).to eq('gunel123')
+    end
+    
+    it "returns peep information about JOIN" do
+      user = repo.find_all_with_id(3)
+      p user
+      expect(user.last.id).to eq(4)
+    end
+
   end
 end

@@ -18,7 +18,7 @@ class UserRepository
       users << user
     end
 
-    return users # => array of User objects
+    return users
   end
 
   def create(user)
@@ -74,11 +74,13 @@ class UserRepository
   end
 
 
-  def find_all_with_id
+  def find_all_with_id(id)
     sql = 'SELECT users.id, users.username, users.email, users.password, peeps.id, peeps.content, peeps.timestamp, peeps.tag
     FROM users
-    JOIN peeps on peeps.user_id = users.id;'
-    result_set = DatabaseConnection.exec_params(sql,[])
+    JOIN peeps on peeps.user_id = users.id
+    WHERE users.id = $1;'
+
+    result_set = DatabaseConnection.exec_params(sql,[id])
 
     user = User.new
     user.id = result_set.first['id'].to_i

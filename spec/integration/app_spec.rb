@@ -161,4 +161,35 @@ describe Application do
       expect(response.body).to include('<h1>Email already in use.</h1>')
     end
   end
+
+  context "get /session/logout" do
+    it "returns a redirect 302 status when user logs out" do
+      response = get('/session/logout')
+      expect(response.status).to eq(302)
+    end
+  end
+
+  context "get /email_not_found'" do
+    it "returns a 200 status when users email isn't found" do
+      response = get('/email_not_found')
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<h1>Email not found.</h1>')
+    end
+  end
+
+  context "get /login_failure'" do
+    it "returns a 200 status when user cannot log in" do
+      response = get('/login_failure')
+      expect(response.status).to eq(400)
+      expect(response.body).to include('<h1>Incorrect Credentials</h1>')
+    end
+  end
+
+  context "get /email_already_exists'" do
+    it "returns a 200 status when user tries to sign up with email that already exists" do
+      response = get('/email_already_exists')
+      expect(response.status).to eq(200)
+      expect(response.body).to include('<h1>Email already in use.</h1>')
+    end
+  end
 end
