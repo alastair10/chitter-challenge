@@ -104,7 +104,8 @@ class UserRepository
   def find_all_peeps
     sql = 'SELECT users.id, users.username, users.email, users.password, peeps.id, peeps.content, peeps.timestamp, peeps.tag
     FROM users
-    JOIN peeps on peeps.user_id = users.id;'
+    JOIN peeps on peeps.user_id = users.id
+    ORDER BY timestamp DESC;'
 
     result_set = DatabaseConnection.exec_params(sql,[id])
 

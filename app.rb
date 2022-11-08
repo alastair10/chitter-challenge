@@ -104,6 +104,11 @@ class Application < Sinatra::Base
     end
   end
 
+  get '/session_peeps' do
+    repo = UserRepository.new
+    @peeps = repo.find_all_peeps
+  end
+
   get '/peeps/new' do
     if session[:user_id] == nil
       return erb(:login)

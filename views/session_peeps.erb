@@ -4,7 +4,7 @@
 
 
 <% @peeps.each do |peep| %>
-  <h5><div><%= peep.user_id %></div></h5>
+  <h5><div><%= peep.user.id%></div></h5>
   <h4><%= peep.content %></h4>
   <%= peep.tag %>
   <h5><div><%= peep.timestamp %></div></h5>
