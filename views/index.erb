@@ -1,14 +1,35 @@
-  <html>
-  <head></head>
+<!DOCTYPE html>
+<html lang="en">
   <% if flash[:notice] %>
-    <div class="notice"><%= flash[:notice] %></div>
+  <div class="notice"><%= flash[:notice] %></div>
   <% end %>
+  <head>
+    <style>
+      h1 {text-align: center;}
+      div {text-align: center;}
+    </style>
+    <title>Welcome to Chitter!</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
 
   <body>
+
+
+  <div class="content">
     <h1>Welcome to Chitter!</h1>
-    <div><a href="/login">Sign in</a></div>
-    <h2>New here?</h2>
-    <div><a href="/create_account">Create an account</a></div>
-    <h2><a href="/peeps">Show me what everyone is talking about.</a></h2>
+
+    <div class="center-field">
+      <div><a href="/login">Sign in</a></div>
+      <h2><a href="/peeps">Show me what everyone is talking about.</a></h2>
+      <h2>New here?</h2>
+      <div><a href="/create_account">Create an account</a></div>
+      
+    </div>
+  </div>
   </body>
+
 </html>
+
+

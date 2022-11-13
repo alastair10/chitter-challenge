@@ -1,9 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head> 
+  <style>
+    h1 {text-align: center;}
+    div {text-align: center;}
+  </style>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
 <h4><a href="/peeps/new">Post a peep!</a></h4>
+<body><a href="/index">Log out</a></body>
+<body>
+  <div class="content">
+  
+  <div class="center-field">
+    <% @peeps.each do |peep| %>
+      <div><b><%= peep.content %></div></b>
+      
+      <div><%= peep.tag %></div>
+      <h6><div><%= peep.timestamp %></div></h6>
+  </br>
+    <% end %>
+  </div>
+</body>
+</html>
 
-<% @peeps.each do |peep| %>
-  <div><%= peep.user_id %></div>
-  <%= peep.content %>
-  <div><%= peep.tag %></div>
-  <h5><div><%= peep.timestamp %></div></h5>
 
-<% end %>
+
