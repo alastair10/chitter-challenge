@@ -46,3 +46,4 @@ rubocop
 - Web Framework: Sinatra
 - Test Framework: rspec
 - Database: PostgreSQL
+- User Authentication: BCrypt
